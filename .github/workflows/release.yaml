@@ -1,11 +1,12 @@
-name: Publish package to GitHub Packages
+name: Publish artifact to releases.
 #on:
 #  release:
 #    types: [created]
+
 on:
-  # Triggers the workflow on push or pull request events but only for the master branch
   push:
-    branches: [ main ]
+    tags:
+      - "v*.*.*"
 jobs:
   publish:
     runs-on: ubuntu-latest
