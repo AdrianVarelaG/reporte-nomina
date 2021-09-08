@@ -1,5 +1,11 @@
-package com.beet.analyzer.invoice.transformer;
+package com.beet.analyzer.invoice.service;
 
-public interface CsvTransformer {
-  
+import com.beet.analyzer.invoice.model.PayrollReport;
+
+import java.util.List;
+
+public interface CsvTransformerService {
+
+  List<String> convertToCsvFile(PayrollReport report);
+
 }

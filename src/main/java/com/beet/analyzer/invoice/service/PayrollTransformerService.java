@@ -1,9 +1,10 @@
 package com.beet.analyzer.invoice.service;
 
 import com.beet.analyzer.invoice.model.FileNameInputStream;
-import com.beet.model.invoice.xml.model.comprobante.Comprobante;
+import com.beet.analyzer.invoice.model.Payroll;
 
-public interface ComprobanteTransformerService {
 
-  Comprobante toComprobante(FileNameInputStream fileNameInput);
+public interface PayrollTransformerService {
+
+  Payroll toPayroll(FileNameInputStream fileNameInput);
 }

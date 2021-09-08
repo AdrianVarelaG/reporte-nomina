@@ -1,14 +1,6 @@
-package com.beet.analizer.invoice;
+package com.beet.analyzer.invoice;
 
-import com.beet.model.invoice.assembler.nomina.NominaAssembler;
-import com.beet.model.invoice.model.Rfc;
-import com.beet.model.invoice.model.nomina.ComplementoNomina;
-import com.beet.model.invoice.model.nomina.Deduccion;
-import com.beet.model.invoice.model.nomina.OtroPago;
-import com.beet.model.invoice.model.nomina.Percepcion;
-import com.beet.model.invoice.xml.model.comprobante.Comprobante;
-import com.beet.model.invoice.xml.model.nomina.Nomina;
-import com.beet.model.invoice.xml.utils.ComprobanteUtils;
+import com.beet.analyzer.invoice.service.PayrollService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -16,26 +8,23 @@ import org.springframework.boot.WebApplicationType;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.Unmarshaller;
-import java.io.File;
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.List;
-import java.util.stream.Collectors;
-
 @Slf4j
 @SpringBootApplication
-public class InvoiceAnalizerApplication implements CommandLineRunner {
+public class InvoiceAnalyzerApplication implements CommandLineRunner {
 
-  @Autowired
-  private JAXBContext context;
+  PayrollService payrollService;
+
 	public static void main(String[] args) {
 		//SpringApplication.run(InvoiceAnalizerApplication.class, args);
-      new SpringApplicationBuilder(InvoiceAnalizerApplication.class)
+      new SpringApplicationBuilder(InvoiceAnalyzerApplication.class)
               .web(WebApplicationType.NONE)
               .run(args);
 	}
+
+  @Autowired
+  public InvoiceAnalyzerApplication(PayrollService payrollService) {
+    this.payrollService = payrollService;
+  }
 
   /**
    *
@@ -48,10 +37,14 @@ public class InvoiceAnalizerApplication implements CommandLineRunner {
 
     if(args.length < 1) {
       log.error("Please include de argument for the directory where the xml are!");
-      log.error("java -jar Nominas $path");
-      throw new IllegalArgumentException("Invalid argument");
+      log.error("java -jar reporte-nomina path");
+      //throw new IllegalArgumentException("Invalid argument");
     }
+    log.info("reading files from {}", args[0] );
 
+    payrollService.generateReport(args[0]);
+
+/*
     File basePath = new File(args[0]);
     File[] files = basePath.listFiles( (File dir, String name) -> name.endsWith(".xml"));
 
@@ -111,7 +104,7 @@ public class InvoiceAnalizerApplication implements CommandLineRunner {
         }
         System.out.println(sb.toString());
 
-       /* for (int i = 0; i < n.getPercepciones().getPercepciones().size(); i++) {
+        for (int i = 0; i < n.getPercepciones().getPercepciones().size(); i++) {
           ToPercepciones(sb, n.getPercepciones().getPercepciones().get(i));
 
           if (i < n.getDeducciones().getDeducciones().size()) {
@@ -127,28 +120,13 @@ public class InvoiceAnalizerApplication implements CommandLineRunner {
                   .append(n.getFechaInicialPago().getFecha().toString() + ",")
                   .append(n.getFechaFinalPago().getFecha().toString() + ",");
           sb.append(",,,,,,,,");
-        }*/
+        }
 
       });
 
     }
-    
-  }
-  
-  private static void ToPercepciones(StringBuilder sb, Percepcion p ) {
-    sb.append(p.getConcepto().getvalor() + ",")
-      .append(p.getImporteGravado().getValor() + ",")
-      .append(p.getImporteExecto().getValor() + ",");
+*/
   }
 
-  private static void ToDeducciones(StringBuilder sb, Deduccion d ) {
-    sb.append(d.getConcepto().getvalor() +  ",")
-      .append(d.getImporte().getValor() + ",");
-  }
-  
-  private static void ToOtrosPagos(StringBuilder sb, OtroPago o) {
-    sb.append(o.getConcepto().getvalor() + ",")
-      .append(o.getImporte().getValor() + ",");
-  }
 	
 }

@@ -1,0 +1,10 @@
+version: '3.8'
+services:
+  builder:
+    container_name: java-builder
+    image: maven:3.6.1-jdk-8-alpine
+    working_dir: /app
+    volumes:
+      - /Users/cesar.varela/.m2:/root/.m2
+      - .:/app
+    command: mvn clean install
