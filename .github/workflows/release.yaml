@@ -24,10 +24,10 @@ jobs:
           PASSWORD: ${{ secrets.GITHUB_TOKEN }}
         run: mvn --batch-mode clean package --settings settings.xml
       - name: Bump version and push tag
-          id: tag_version
-          uses: mathieudutour/github-tag-action@v5.6
-          with:
-            github_token: ${{ secrets.GITHUB_TOKEN }}
+        id: tag_version
+        uses: mathieudutour/github-tag-action@v5.6
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
       - name: Release
         uses: softprops/action-gh-release@v1
         with:
