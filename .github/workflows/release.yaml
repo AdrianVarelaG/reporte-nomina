@@ -19,8 +19,9 @@ jobs:
           java-version: '8'
           distribution: 'adopt'
       - name: Publish package
-        run: mvn --batch-mode clean package
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          USENAME: ${{github.actor}}
+          PASSWORD: ${{ secrets.GITHUB_TOKEN }}
+        run: mvn --batch-mode clean package --settings settings.xml
       - name: Review directory
         run: ls -R
