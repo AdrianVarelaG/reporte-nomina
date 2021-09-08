@@ -23,5 +23,15 @@ jobs:
           USENAME: ${{github.actor}}
           PASSWORD: ${{ secrets.GITHUB_TOKEN }}
         run: mvn --batch-mode clean package --settings settings.xml
-      - name: Review directory
-        run: ls -R
+      - name: Bump version and push tag
+          id: tag_version
+          uses: mathieudutour/github-tag-action@v5.6
+          with:
+            github_token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Release
+        uses: softprops/action-gh-release@v1
+        with:
+          body: ${{ steps.tag_version.outputs.changelog }}
+          name: Release ${{ steps.tag_version.outputs.new_tag }}
+          tag_name: ${{ steps.tag_version.outputs.new_tag }}
+          files: target/reporte-nomina.jar
