@@ -21,10 +21,12 @@ jobs:
           USENAME: ${{github.actor}}
           PASSWORD: ${{ secrets.GITHUB_TOKEN }}
         run: mvn --batch-mode clean package --settings settings.xml
-      - name: test changelog
-        run: cat tmp/changelog.txt
+      - name: Read changelog file
+        id: changelog
+        run: echo "::set-output name=body::$(cat tmp/changelog.txt)"
       - name: Release
         uses: softprops/action-gh-release@v1
         with:
+          body: ${{ steps.changelog.outputs.body }}
           token: ${{ secrets.RELEASE_TOKEN }}
           files: target/reporte-nomina.jar
