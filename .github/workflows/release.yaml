@@ -21,7 +21,8 @@ jobs:
           USENAME: ${{github.actor}}
           PASSWORD: ${{ secrets.GITHUB_TOKEN }}
         run: mvn --batch-mode clean package --settings settings.xml
-
+      - name: test changelog
+        run: cat tmp/changelog.txt
       - name: Release
         uses: softprops/action-gh-release@v1
         with:
