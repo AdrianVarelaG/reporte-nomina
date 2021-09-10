@@ -24,7 +24,7 @@ jobs:
           github_token: ${{ secrets.RELEASE_TOKEN }}
 
       - name: save changelog
-        run: ${{ steps.tag_version.outputs.changelog }} > tmp/changelog.txt
+        run: echo "${{ steps.tag_version.outputs.changelog }}" > tmp/changelog.txt
 
       - name: Commit files
         run: |
