@@ -29,4 +29,4 @@ jobs:
         uses: softprops/action-gh-release@v1
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          files: target/reporte-nomina.jar
+          files: ./target/reporte-nomina.jar
